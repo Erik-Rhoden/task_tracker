@@ -1,6 +1,7 @@
 from src.task import TaskManager
 
 def add_task_command(tasks):
+    tasks.save_tasks()
     print(f'Added task: {tasks.description}')
 
 def list_task_command(tasks):
