@@ -1,8 +1,13 @@
-from src.task import TaskManager
+from src.task import save_tasks, load_tasks, get_description
 
 def add_task_command(tasks):
-    tasks.save_tasks()
-    print(f'Added task: {tasks.description}')
+    save_tasks(tasks)
+    print(f'Added task: {tasks.task}')
 
 def list_task_command(tasks):
-    tasks.load_tasks()
+    tasks = load_tasks()
+    
+    if not tasks:
+        return "no tasks found!"
+    
+    return get_description(tasks)

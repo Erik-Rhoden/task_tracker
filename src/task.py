@@ -2,49 +2,64 @@ import os
 import json
 from datetime import datetime
 
-class TaskManager:
-    def __init__(self, args):
-        self.tasks = []
-        self.load_tasks()
-        self.description = getattr(args, 'task', None)
-        self.status = getattr(args, 'status', None)
-        self.id = self.get_id()
-        self.createdAt = datetime.now()
-        self.updatedAt = None
+# create data/tasks.json if it does not exist
+def make_tasks_file():
+    try:
+        if not os.path.exists('data'):
+            os.makedirs('data')
 
-    def get_id(self):
-        if self.tasks:
-            return max(task['id'] for task in self.tasks) + 1
-        
-        return 1
-
-    def load_tasks(self):
         file_path = 'data/tasks.json'
-        if os.path.exists(file_path):
-            with open(file_path, "r") as f:
-                self.tasks = json.load(f)
-                if not isinstance(self.tasks, list):
-                    self.tasks = []
 
-    def save_tasks(self):
-        dir_path = 'data'
-        file_path = os.path.join(dir_path, 'tasks.json')
+        if not os.path.exists(file_path):
+            with open(file_path, 'a+') as f:
+                json.dump([], f)
 
-        if not os.path.exists(dir_path):
-            os.makedirs(dir_path)
+    except Exception as e:
+        print(e)
 
-        task = {
-            "description": self.description,
-            "status": self.status,
-            "id": self.id,
-            "createdAt": self.createdAt.isoformat(),
-            "updatedAt": self.updatedAt.isoformat() if self.updatedAt else None
-        }
+# checks for max id and returns id
+def get_id():
+    arr = []
 
-        self.tasks.append(task)
+    if os.path.getsize('data/tasks.json') == 0:
+        return 1
     
-        with open(file_path, "w") as f:
-            json.dump(self.tasks, f, indent=4)
+    with open('data/tasks.json') as data_file:
+        data = json.load(data_file)
+        for task in data:
+            arr.append(task['id'])
+    return max(arr) + 1 if arr else 1
+    
 
-    def get_description(self):
-        return f'{self.description}'
+def load_tasks():
+    with open('data/tasks.json', "r") as f:
+        try:
+            return json.load(f)
+        except json.JSONDecodeError:
+            return []
+
+#updates tasks.json with new tasks
+def save_tasks(args):
+    tasks = load_tasks()
+
+    task = {
+        "task": args.task,
+        "status": args.status,
+        "id": get_id(),
+        "createdAt": datetime.now().isoformat(),
+        "updatedAt": datetime.now().isoformat()
+    }
+
+    tasks.append(task)
+    
+    with open('data/tasks.json', "w") as f:
+        json.dump(tasks, f, indent=4)
+
+    return tasks
+
+#helper function for list command
+def get_description(tasks):
+    for task in tasks:
+        print(f'ID: {task['id']}')
+        print(f'Task: {task['task']}')
+        print(f'Status: {task['status']}')
