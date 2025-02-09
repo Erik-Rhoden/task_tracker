@@ -63,3 +63,5 @@ def get_description(tasks):
         print(f'ID: {task['id']}')
         print(f'Task: {task['task']}')
         print(f'Status: {task['status']}')
+        print(f'CreatedAt: {task['createdAt']}')
+        print(f'UpdatedAt: {task['updatedAt']}')

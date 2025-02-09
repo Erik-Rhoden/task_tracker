@@ -5,9 +5,9 @@ def add_task_command(tasks):
     print(f'Added task: {tasks.task}')
 
 def list_task_command(tasks):
-    tasks = load_tasks()
+    record = load_tasks()
     
-    if not tasks:
-        return "no tasks found!"
+    if not record:
+        print("no tasks found!")
     
-    return get_description(tasks)
+    return get_description(record)
