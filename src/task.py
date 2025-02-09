@@ -18,7 +18,7 @@ def make_tasks_file():
         print(e)
 
 # checks for max id and returns id
-def get_id():
+def create_id():
     arr = []
 
     if os.path.getsize('data/tasks.json') == 0:
@@ -45,7 +45,7 @@ def save_tasks(args):
     task = {
         "task": args.task,
         "status": args.status,
-        "id": get_id(),
+        "id": create_id(),
         "createdAt": datetime.now().isoformat(),
         "updatedAt": datetime.now().isoformat()
     }
@@ -57,6 +57,30 @@ def save_tasks(args):
 
     return tasks
 
+def update_status(arg):
+    tasks = load_tasks()
+
+    for task in tasks:
+        if task['id'] == arg.id:
+            task['status'] = arg.status
+            task['updatedAt'] = datetime.now().isoformat()
+            break
+
+    with open('data/tasks.json', 'w') as f:
+        json.dump(tasks, f, indent=4)
+
+def update_task(arg):
+    tasks = load_tasks()
+
+    for task in tasks:
+        if task['id'] == arg.id:
+            task['task'] = arg.task
+            task['updatedAt'] = datetime.now().isoformat()
+            break
+
+    with open('data/tasks.json', 'w') as f:
+        json.dump(tasks, f, indent=4)
+
 #helper function for list command
 def get_description(tasks):
     for task in tasks:
@@ -65,3 +89,8 @@ def get_description(tasks):
         print(f'Status: {task['status']}')
         print(f'CreatedAt: {task['createdAt']}')
         print(f'UpdatedAt: {task['updatedAt']}')
+
+def get_task(tasks, id):
+    for task in tasks:
+        if task['id'] == id:
+            return task
