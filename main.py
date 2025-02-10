@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from src.cli import setup_parser
 from src.task import make_tasks_file
 
