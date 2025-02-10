@@ -68,7 +68,7 @@ class TestUpdate:
         )
 
         result = subprocess.run(
-            ["python3", main_py, "update", "--id", "1", "--status", "todo"],
+            ["python3", main_py, "update", "1", "--status", "todo"],
             capture_output=True, text=True, cwd=PROJECT_ROOT, check=True
         )
 
@@ -82,7 +82,7 @@ class TestUpdate:
         )
         
         result = subprocess.run(
-            ["python3", main_py, "update", "--id", "1", "--new-name", "new test"],
+            ["python3", main_py, "update", "1", "--rename", "new test"],
             capture_output=True, text=True, cwd=PROJECT_ROOT, check=True
         )
 

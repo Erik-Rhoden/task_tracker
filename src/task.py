@@ -84,9 +84,9 @@ def update_id_new_task(arg):
 
     for task in tasks:
         if task['id'] == arg.id:
-            task['task'] = arg.new_name
+            task['task'] = arg.rename
             task['updatedAt'] = datetime.now().isoformat()
-            print(f'ID {task['id']} updated to {arg.new_name}')
+            print(f'ID {task['id']} updated to {arg.rename}')
             break
 
     with open(TASKS_FILE, 'w') as f:
@@ -130,7 +130,7 @@ def get_list(arg):
     headers = ["ID", "TASKS", "STATUS"]
 
     print("{: <5} {: <30} {: <15}".format(*headers))
-    print("-" * 65)
+    print("-" * 45)
 
     if arg.status == "incomplete":
         for task in record:

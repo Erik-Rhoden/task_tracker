@@ -17,7 +17,7 @@ def update_task_command(arg):
     if arg.id and arg.status:
         update_id_status(arg)
 
-    if arg.id and arg.new_name:
+    if arg.id and arg.rename:
         update_id_new_task(arg)
         
 def delete_task_command(arg):

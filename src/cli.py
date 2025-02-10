@@ -45,9 +45,9 @@ def setup_parser():
             "help": "update an existing task",
             "func": update_task_command,
             "arguments": [
-                {"flags": ["--id"], "kwargs": {"type": int, "help": "use the task id to select the task"}},
+                {"flags": ["id"], "kwargs": {"type": int, "help": "use the task id to select the task"}},
                 {"flags": ["--status"], "kwargs": {"type": str, "choices": ["in-progress", "todo", "done"], "help": "update the status of a task"}},
-                {"flags": ["--new-name"], "kwargs": {"type": str, "help": "update the task description"}},
+                {"flags": ["--rename"], "kwargs": {"type": str, "help": "update the task description"}},
             ]
         },
         {
