@@ -78,43 +78,15 @@ def update_id_status(arg):
     with open(TASKS_FILE, 'w') as f:
         json.dump(tasks, f, indent=4)
 
-def update_task_status(arg):
-    tasks = load_tasks()
-
-    for task in tasks:
-        if task['task'] == arg.task:
-            old_task = task['task']
-            task['status'] = arg.status
-            task['updatedAt'] = datetime.now().isoformat()
-            print(f'{old_task} status updated to {arg.status}')
-            break
-    
-    with open(TASKS_FILE, 'w') as f:
-        json.dump(tasks, f, indent=4)
-
 #updates the status of an individual task by id
 def update_id_new_task(arg):
     tasks = load_tasks()
 
     for task in tasks:
         if task['id'] == arg.id:
-            task['task'] = arg.new_task
+            task['task'] = arg.new_name
             task['updatedAt'] = datetime.now().isoformat()
-            print(f'ID {task['id']} updated to {arg.new_task}')
-            break
-
-    with open(TASKS_FILE, 'w') as f:
-        json.dump(tasks, f, indent=4)
-
-def update_task_new_task(arg):
-    tasks = load_tasks()
-
-    for task in tasks:
-        if task['task'] == arg.task:
-            old_task = task['task']
-            task['task'] = arg.new_task
-            task['updatedAt'] = datetime.now().isoformat()
-            print(f'{old_task} updated to {arg.new_task}')
+            print(f'ID {task['id']} updated to {arg.new_name}')
             break
 
     with open(TASKS_FILE, 'w') as f:
@@ -123,10 +95,6 @@ def update_task_new_task(arg):
 #deletes a task
 def delete_task(arg):
     tasks = load_tasks()
-
-    if not tasks:
-        print("no tasks available!")
-        return
         
     new_tasks = []
     task_found = False
@@ -164,12 +132,23 @@ def get_list(arg):
     print("{: <5} {: <30} {: <15}".format(*headers))
     print("-" * 65)
 
-    for task in record:
-        if arg.status and task['status'] != arg.status:
-            continue
+    if arg.status == "incomplete":
+        for task in record:
+            if task['status'] == "done":
+                continue
+            
+            wrapped_task = textwrap.wrap(task['task'], width=30)
+            print("{: <5} {: <30} {: <15}".format(str(task['id']), wrapped_task[0], task['status']))
 
-        wrapped_task = textwrap.wrap(task['task'], width=30)
-        print("{: <5} {: <30} {: <15}".format(str(task['id']), wrapped_task[0], task['status']))
+            for line in wrapped_task[1:]:
+                print("{:<5} {:<30} {:<15}".format("", line, ""))
+    else:
+        for task in record:
+            if arg.status and task['status'] != arg.status:
+                continue
 
-        for line in wrapped_task[1:]:
-            print("{:<5} {:<30} {:<15}".format("", line, ""))
+            wrapped_task = textwrap.wrap(task['task'], width=30)
+            print("{: <5} {: <30} {: <15}".format(str(task['id']), wrapped_task[0], task['status']))
+
+            for line in wrapped_task[1:]:
+                print("{:<5} {:<30} {:<15}".format("", line, ""))

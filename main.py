@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import sys
-import os
 from src.cli import setup_parser
 from src.task import make_tasks_file
 
