@@ -17,7 +17,7 @@ def create_subparser(subparsers, name, help_text, func, arguments=None):
 def setup_parser():
     parser = argparse.ArgumentParser(
         prog="Task Manager CLI",
-        description="A task manager to track your tasks and give valuable feedback"
+        description="A task manager to track your tasks"
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -47,7 +47,7 @@ def setup_parser():
             "arguments": [
                 {"flags": ["id"], "kwargs": {"type": int, "help": "use the task id to select the task"}},
                 {"flags": ["--status"], "kwargs": {"type": str, "choices": ["in-progress", "todo", "done"], "help": "update the status of a task"}},
-                {"flags": ["--rename"], "kwargs": {"type": str, "help": "update the task description"}},
+                {"flags": ["--rename"], "kwargs": {"type": str, "help": "rename the task"}},
             ]
         },
         {

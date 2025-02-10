@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 from src.cli import setup_parser
-from src.task import make_tasks_file
+from src.task import make_json_file
 
 
 def main():
-    make_tasks_file()
+    make_json_file()
 
     parser = setup_parser()
     args = parser.parse_args()

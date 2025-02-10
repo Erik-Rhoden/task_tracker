@@ -6,7 +6,7 @@ import textwrap
 from src.paths import DATA_DIR, TASKS_FILE
 
 # create data/tasks.json if it does not exist
-def make_tasks_file():
+def make_json_file():
     try:
         os.makedirs(DATA_DIR, exist_ok=True)
         if not os.path.isfile(TASKS_FILE) or not is_valid_json(TASKS_FILE):
@@ -59,8 +59,7 @@ def save_tasks(args):
 
     tasks.append(task)
     
-    with open(TASKS_FILE, "w") as f:
-        json.dump(tasks, f, indent=4)
+    write_json_file(tasks)
 
     print(f'Task added successfully (ID: {task['id']})')
 
@@ -75,8 +74,7 @@ def update_id_status(arg):
             print(f'ID {task['id']} status updated to {arg.status}')
             break
 
-    with open(TASKS_FILE, 'w') as f:
-        json.dump(tasks, f, indent=4)
+    write_json_file(tasks)
 
 #updates the status of an individual task by id
 def update_id_new_task(arg):
@@ -89,8 +87,7 @@ def update_id_new_task(arg):
             print(f'ID {task['id']} updated to {arg.rename}')
             break
 
-    with open(TASKS_FILE, 'w') as f:
-        json.dump(tasks, f, indent=4)
+    write_json_file(tasks)
 
 #deletes a task
 def delete_task(arg):
@@ -108,10 +105,9 @@ def delete_task(arg):
     
     if not task_found:
         print('no such task!')
-        return    
-
-    with open(TASKS_FILE, 'w') as f:
-        json.dump(new_tasks, f, indent=4)
+        return
+    
+    write_json_file(new_tasks)
 
 #deletes data/tasks.json 
 def reset_task():
@@ -152,3 +148,7 @@ def get_list(arg):
 
             for line in wrapped_task[1:]:
                 print("{:<5} {:<30} {:<15}".format("", line, ""))
+
+def write_json_file(tasks):
+    with open(TASKS_FILE, 'w') as f:
+        json.dump(tasks, f, indent=4)
