@@ -20,7 +20,7 @@ def remove_data_dir():
 
 
 class TestAddTask:
-    def test_add_task_cli(self):
+    def test_add_task_cli(self, remove_data_dir):
         result = subprocess.run(
             ["python3", main_py, "add", "new task"],
             capture_output=True, text=True, cwd=PROJECT_ROOT, check=True

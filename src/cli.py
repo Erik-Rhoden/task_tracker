@@ -16,8 +16,11 @@ def setup_parser():
     add_parser.set_defaults(func=add_task_command)
     
     #list command
-    list_parser = subparser.add_parser("list", help="lists current tasks")
-    list_parser.set_defaults(func=list_task_command)
+    add_parser = subparser.add_parser("list", help="lists current tasks")
+    add_parser.add_argument("--status", type=str, 
+                            choices=["in-progress", "todo", "done"],
+                            help="Current status of task")
+    add_parser.set_defaults(func=list_task_command)
 
     #update command
     add_parser = subparser.add_parser("update", help="update an existing task")

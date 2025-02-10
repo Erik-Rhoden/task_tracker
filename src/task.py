@@ -152,20 +152,24 @@ def reset_task():
         print('The task manager has been reset')
 
 #helper function for list command
-def get_list():
+def get_list(arg):
     record = load_tasks()
+
     if not record:
         print("no tasks found!")
         return
-    else:
-        headers = ["ID", "TASKS", "STATUS"]
 
-        print("{: <5} {: <30} {: <15}".format(*headers))
-        print("-" * 65)
+    headers = ["ID", "TASKS", "STATUS"]
 
-        for task in record:
-            wrapped_task = textwrap.wrap(task['task'], width=30)
-            print("{: <5} {: <30} {: <15}".format(str(task['id']), wrapped_task[0], task['status']))
+    print("{: <5} {: <30} {: <15}".format(*headers))
+    print("-" * 65)
 
-            for line in wrapped_task[1:]:
-                print("{:<5} {:<30} {:<15}".format("", line, ""))
+    for task in record:
+        if arg.status and task['status'] != arg.status:
+            continue
+
+        wrapped_task = textwrap.wrap(task['task'], width=30)
+        print("{: <5} {: <30} {: <15}".format(str(task['id']), wrapped_task[0], task['status']))
+
+        for line in wrapped_task[1:]:
+            print("{:<5} {:<30} {:<15}".format("", line, ""))

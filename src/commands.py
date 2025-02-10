@@ -7,8 +7,8 @@ from src.task import (
 def add_task_command(tasks):
     save_tasks(tasks)
 
-def list_task_command(tasks):
-    return get_list()
+def list_task_command(arg):
+    return get_list(arg)
 
 def update_task_command(arg):
     if arg.id and arg.status:
