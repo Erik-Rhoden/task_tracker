@@ -59,28 +59,56 @@ def save_tasks(args):
     print(f'Task added successfully (ID: {task['id']})')
 
 #updates the status of an individual task by id
-def update_status(arg):
+def update_id_status(arg):
     tasks = load_tasks()
 
     for task in tasks:
-        if task['id'] == arg.id or task['task'] == arg.task:
+        if task['id'] == arg.id:
             task['status'] = arg.status
             task['updatedAt'] = datetime.now().isoformat()
-            print(f'{task['task']} status updated to {arg.status}')
+            print(f'ID {task['id']} status updated to {arg.status}')
             break
 
     with open('data/tasks.json', 'w') as f:
         json.dump(tasks, f, indent=4)
 
-#updates the status of an individual task by id
-def update_task(arg):
+def update_task_status(arg):
     tasks = load_tasks()
 
     for task in tasks:
-        if task['id'] == arg.id or task['task'] == arg.task:
+        if task['task'] == arg.task:
+            old_task = task['task']
+            task['status'] = arg.status
+            task['updatedAt'] = datetime.now().isoformat()
+            print(f'{old_task} status updated to {arg.status}')
+            break
+    
+    with open('data/tasks.json', 'w') as f:
+        json.dump(tasks, f, indent=4)
+
+#updates the status of an individual task by id
+def update_id_new_task(arg):
+    tasks = load_tasks()
+
+    for task in tasks:
+        if task['id'] == arg.id:
             task['task'] = arg.new_task
             task['updatedAt'] = datetime.now().isoformat()
             print(f'ID {task['id']} updated to {arg.new_task}')
+            break
+
+    with open('data/tasks.json', 'w') as f:
+        json.dump(tasks, f, indent=4)
+
+def update_task_new_task(arg):
+    tasks = load_tasks()
+
+    for task in tasks:
+        if task['task'] == arg.task:
+            old_task = task['task']
+            task['task'] = arg.new_task
+            task['updatedAt'] = datetime.now().isoformat()
+            print(f'{old_task} updated to {arg.new_task}')
             break
 
     with open('data/tasks.json', 'w') as f:
@@ -92,13 +120,16 @@ def delete_task(arg):
 
     if not tasks:
         print("no tasks available!")
+
+    if arg.id not in tasks:
+        print('no such task!')
         
     new_tasks = []
 
     for task in tasks:
         if task['id'] != arg.id:
             new_tasks.append(task)
-        else:
+        if task['id'] == arg.id:
             print(f'{task['task']} has been deleted')
 
     with open('data/tasks.json', 'w') as f:
