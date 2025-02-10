@@ -6,7 +6,7 @@ def main():
 
     parser = setup_parser()
     args = parser.parse_args()
-
+    
     if hasattr(args, 'func'):
         args.func(args)
 
