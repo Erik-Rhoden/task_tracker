@@ -3,22 +3,26 @@ import json
 from datetime import datetime
 import shutil
 import textwrap
-
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(PROJECT_ROOT, 'data')
-TASKS_FILE = os.path.join(DATA_DIR, 'tasks.json')
+from src.paths import DATA_DIR, TASKS_FILE
 
 # create data/tasks.json if it does not exist
 def make_tasks_file():
     try:
-        if not os.path.exists(DATA_DIR):
-            os.makedirs(DATA_DIR)
-        if not os.path.isfile(TASKS_FILE):
+        os.makedirs(DATA_DIR, exist_ok=True)
+        if not os.path.isfile(TASKS_FILE) or not is_valid_json(TASKS_FILE):
             with open(TASKS_FILE, 'w') as f:
                 json.dump([], f, indent=4)
 
     except Exception as e:
-        print(e)
+        raise RuntimeError(f"Failed to create tasks file: {e}")
+    
+def is_valid_json(TASKS_FILE):
+    try:
+        with open(TASKS_FILE, 'r') as f:
+            json.load(f)
+        return True
+    except (json.JSONDecodeError, FileNotFoundError):
+        return False
 
 # checks for max id and returns id
 def create_id():
@@ -142,27 +146,26 @@ def delete_task(arg):
         json.dump(new_tasks, f, indent=4)
 
 #deletes data/tasks.json 
-def reset_task(arg):
-    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    data_dir = os.path.join(project_root, 'data')   
-
-    if os.path.exists(data_dir):
-        shutil.rmtree(data_dir)
+def reset_task():
+    if os.path.exists(DATA_DIR):
+        shutil.rmtree(DATA_DIR)
         print('The task manager has been reset')
 
 #helper function for list command
-def get_description(tasks):
-    if not tasks:
+def get_list():
+    record = load_tasks()
+    if not record:
+        print("no tasks found!")
         return
-    
-    headers = ["ID", "TASKS", "STATUS"]
+    else:
+        headers = ["ID", "TASKS", "STATUS"]
 
-    print("{: <5} {: <30} {: <15}".format(*headers))
-    print("-" * 65)
+        print("{: <5} {: <30} {: <15}".format(*headers))
+        print("-" * 65)
 
-    for task in tasks:
-        wrapped_task = textwrap.wrap(task['task'], width=30)
-        print("{: <5} {: <30} {: <15}".format(str(task['id']), wrapped_task[0], task['status']))
+        for task in record:
+            wrapped_task = textwrap.wrap(task['task'], width=30)
+            print("{: <5} {: <30} {: <15}".format(str(task['id']), wrapped_task[0], task['status']))
 
-        for line in wrapped_task[1:]:
-            print("{:<5} {:<30} {:<15}".format("", line, ""))
+            for line in wrapped_task[1:]:
+                print("{:<5} {:<30} {:<15}".format("", line, ""))

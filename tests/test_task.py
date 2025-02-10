@@ -2,22 +2,20 @@ import os
 import shutil
 import pytest
 from src.task import make_tasks_file
+from src.paths import DATA_DIR, TASKS_FILE
 
-@pytest.fixture
+@pytest.fixture(scope="function", autouse=True)
 def remove_data_dir():
-    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    data_dir = os.path.join(project_root, 'data')   
+    if os.path.exists(DATA_DIR):
+        shutil.rmtree(DATA_DIR)    
 
-    if os.path.exists(data_dir):
-        shutil.rmtree(data_dir)    
+    yield
 
-    yield 
+    if os.path.exists(DATA_DIR):
+        shutil.rmtree(DATA_DIR)
 
 class TestTask():
-    def test_make_tasks_file(self, remove_data_dir):
-        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        data_path = os.path.join(project_root, 'data', 'tasks.json')
-
+    def test_make_tasks_file(self):
         make_tasks_file()
 
-        assert os.path.exists(data_path)
+        assert os.path.exists(TASKS_FILE)

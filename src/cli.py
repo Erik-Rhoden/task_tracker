@@ -12,7 +12,7 @@ def setup_parser():
     add_parser.add_argument("task", type=str, help="Task Description")
     add_parser.add_argument("--status", type=str, 
                             choices=["in-progress", "todo", "done"],
-                            default="in-progress", help="Current status of task")
+                            default="todo", help="Current status of task")
     add_parser.set_defaults(func=add_task_command)
     
     #list command
