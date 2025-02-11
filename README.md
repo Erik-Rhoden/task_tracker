@@ -1,6 +1,6 @@
 # task_tracker
 
-Task Tracker is a CLI tool that can add, modify, and delete tasks.
+Task Tracker is a CLI tool that can add, modify, and delete tasks. This was done as part of the Roadmap.sh Projects (https://roadmap.sh/projects/task-tracker)
 
 ## Table of Contents
 
