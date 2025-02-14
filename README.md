@@ -4,9 +4,9 @@ Task Tracker is a CLI tool that can add, modify, and delete tasks. This was done
 
 ## Table of Contents
 
-[Features](#features)
-[Requirements](#requirements)
-[Installion](#installation)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installion](#installation)
 
 ## Features
 
